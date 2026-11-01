@@ -1,0 +1,63 @@
+name: Bututu
+home: ~/.Bututu            # sprites/, sounds/, voices/, memory.json
+
+llm:
+  base_url: http://localhost:11434   # Ollama
+  model: bututu                   # precisa aceitar imagens para ver a tela (gemma3, qwen2.5vl, llava...)
+  temperature: 0.85
+  max_tokens: 300
+  num_ctx: 4096                      # janela de contexto (prompt + memórias + histórico + imagem)
+  keep_alive: 30m
+  timeout: 180
+
+vision:
+  monitor: 1
+  fps: 2                    # captura contínua leve (só guarda o último quadro)
+  max_side: 1024            # reduz a imagem antes de enviar ao modelo
+  jpeg_quality: 70
+  auto_watch: false         # comentar sozinho (DESLIGADO por padrão)
+  watch_interval: 60        # segundos entre observações
+  change_threshold: 6.0     # só comenta se a tela mudou de verdade
+  describer_model: ""       # opcional: modelo de visão separado (ex.: qwen2.5vl:7b). Vazio = llm.model vê a imagem
+
+voice:
+  enabled: true
+  engine: piper             # piper | kokoro | xtts | system
+  piper_model: ~/.Bututu/voices/piper/pt_BR-faber-medium.onnx
+  kokoro_model: ~/.Bututu/voices/kokoro/kokoro-v1.0.onnx
+  kokoro_voices: ~/.Bututu/voices/kokoro/voices-v1.0.bin
+  kokoro_voice: pf_dora
+  xtts_ref: ""              # .wav SEU (ou com permissão de quem fala)
+  speed: 1.0
+  volume: 1.0
+
+stt:
+  enabled: false
+  model: small              # tiny | base | small | medium
+  language: pt
+  device: auto              # auto | cpu | cuda
+  silence_seconds: 0.9
+  energy_threshold: 0.015
+
+actions:
+  # SÓ o que estiver listado aqui pode ser aberto pela IA. Peça confirmação para tudo.
+  confirm: true
+  apps:
+    navegador: firefox
+    calculadora: gnome-calculator
+    bloco_de_notas: notepad
+
+brain:
+  working_messages: 12      # mensagens recentes enviadas ao modelo (o resto vira resumo)
+  consolidate_every: 6      # a cada N trocas, extrai memórias e resume o passado (em segundo plano, quando você para de falar)
+  max_memories: 2000
+  memory_top_k: 5           # quantas memórias entram em cada resposta
+  embedder: auto            # auto | ollama | hash  (auto: usa embed_model; sem ele, cai no modo offline simples)
+  embed_model: nomic-embed-text
+  helper_model: ""          # modelo neutro p/ extrair memórias (útil depois de treinar a personalidade). Vazio = llm.model
+  spontaneous: false        # puxar assunto sozinho quando está entediado (DESLIGADO por padrão; /espontaneo liga)
+  spontaneous_minutes: 25
+  quiet_hours: [0, 7]       # nunca puxa assunto entre 00h e 07h
+
+training:
+  log_chats: true           # guarda suas conversas (SÓ texto, sem imagens) em data/chatlog.jsonl para virar dataset

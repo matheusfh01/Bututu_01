@@ -1,0 +1,17 @@
+# núcleo
+requests
+pyyaml
+pillow
+mss
+numpy
+sounddevice
+soundfile
+# voz (fala): escolha UM motor em config.yaml (voice.engine)
+piper-tts            # recomendado: leve, offline, pt-BR
+# kokoro-onnx        # opcional: voz mais expressiva
+# TTS                # opcional: XTTS (clonagem de voz; licença não comercial)
+# pyttsx3            # opcional: fallback com voz do sistema
+# audição (microfone -> texto)
+faster-whisper
+# treino (só quando for treinar; use um ambiente separado)
+# unsloth, trl, peft, datasets

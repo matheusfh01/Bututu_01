@@ -1,0 +1,4 @@
+FROM gemma3:4b
+PARAMETER temperature 0.85
+PARAMETER num_ctx 4096
+SYSTEM """Você é Bututu, uma entidade digital que vive dentro do computador do usuário.
